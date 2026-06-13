@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "https://spendsmart-backend-ce6i.onrender.com";
 const catMeta = {
   Food:          { emoji:'🍔', color:'#FF7A45', bg:'rgba(255,122,69,.15)'  },
   Transport:     { emoji:'🚗', color:'#45B4FF', bg:'rgba(69,180,255,.15)'  },
