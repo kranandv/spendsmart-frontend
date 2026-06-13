@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SpendSmart — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">Spend<span>Smart</span></div>
+  <div class="topbar-right">
+  </div>
+</div>
+<div class="panel" style="
+    padding: 5%;
+    margin-left: 35%;
+    margin-right: 35%;">
+    <div  style="font-size:15px;font-weight:700" id="table-heading">Login</div>
+    <form id="loginForm">
+    <div class="form-grid">
+          <!-- Amount -->
+          <div class="form-group full">
+            <label class="form-label">Username</label>
+            <div class="amount-wrap">
+              <input type="text" class="form-input" id="username" name="username" required/>
+            </div>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-input" id="password" name="password" required/>
+          </div>
+          <div class="form-group full">
+            <button class="btn btn-primary" type="submit" id="save-btn">Login</button>
+          </div>
+    </div>
+    </form>
+    <br/><br/>
+    <a href="register.html" class="btn btn-primary"> Register ? </a>
+</div>
+<div class="toast" id="toast">
+  <span id="toast-icon">✓</span>
+  <span id="toast-msg">Done!</span>
+</div>
+
+<script src="js/login.js"></script>
+
+</body>
+</html>

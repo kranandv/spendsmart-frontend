@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SpendSmart — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">Spend<span>Smart</span></div>
+  <div class="topbar-right">
+    {% if user %}
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="user-chip">
+      <div class="avatar">{{user.name[0]}}</div>
+      {{user.name}}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% block content  %}
+
+{% endblock  %}
+
+<script src="{{ url_for('static', path='/js/app.js') }}"></script>
+
+<script src="{{ url_for('static', path='/js/login.js') }}"></script>
+
+</body>
+</html>

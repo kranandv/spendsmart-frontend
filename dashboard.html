@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SpendSmart — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div class="topbar">
+  <div class="logo">Spend<span>Smart</span></div>
+  <div class="topbar-right">
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="user-chip" id="userchip">
+      <div class="avatar"></div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ── Summary Cards ── -->
+  <div class="section-label">Summary — June 2026</div>
+  <div class="cards-grid">
+    <div class="card" id="card1" style="--accent:var(--green)">
+      <div class="trend up">▲ 12%</div>
+      <div class="icon">💰</div>
+      <div class="label">Total This Month</div>
+      <div class="value" id="card-total">₹18,450</div>
+      <div class="sub">vs ₹16,480 last month</div>
+    </div>
+    <div class="card" id="card2" style="--accent:var(--orange)">
+      <div class="icon">🔥</div>
+      <div class="label">Highest Category</div>
+      <div class="value" id="card-top-cat">Food</div>
+      <div class="sub" id="card-top-amt">₹5,200 spent · 28%</div>
+    </div>
+    <div class="card" id="card3" style="--accent:var(--blue)">
+      <div class="trend down">▼ 3</div>
+      <div class="icon">📋</div>
+      <div class="label">Total Expenses</div>
+      <div class="value" id="card-count">34</div>
+      <div class="sub">transactions this month</div>
+    </div>
+    <div class="card" id="card4" style="--accent:var(--yellow)">
+      <div class="icon">📅</div>
+      <div class="label">Daily Average</div>
+      <div class="value" id="card-avg">₹615</div>
+      <div class="sub">budget: ₹1000 / day</div>
+    </div>
+  </div>
+
+  <!-- ── Filter Bar ── -->
+  <div class="section-label">Filter Expenses</div>
+  <div class="filter-bar">
+    <span class="filter-label">Filter by</span>
+    <div class="filter-group">
+      <select class="f-select" id="filter-cat">
+        <option value="">All Categories</option>
+        <option>Food</option><option>Transport</option><option>Shopping</option>
+        <option>Bills</option><option>Health</option><option>Entertainment</option>
+        <option>Education</option><option>Other</option>
+      </select>
+      <div class="f-divider"></div>
+      <input type="date" class="f-input" id="filter-from" value="2026-06-01"/>
+      <span style="color:var(--muted);font-size:12px;font-family:'DM Mono',monospace">to</span>
+      <input type="date" class="f-input" id="filter-to" value="2026-06-30"/>
+      <div class="f-divider"></div>
+      <button class="btn btn-primary" onclick="applyFilter()">Apply</button>
+      <button class="btn btn-ghost"   onclick="resetFilter()">Reset</button>
+    </div>
+    <div class="active-filters" id="active-chips" style="display:none">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);align-self:center">Active:</span>
+    </div>
+  </div>
+
+  <!-- ── Chart + Breakdown ── -->
+  <div class="section-label">Spending Breakdown</div>
+  <div class="bottom-grid">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Monthly by Category</div>
+        <div class="panel-meta">JUNE 2026</div>
+      </div>
+      <canvas id="spendChart" height="230"></canvas>
+    </div>
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Category Breakdown</div>
+        <div class="panel-meta" id="catTotal">₹18,450 total</div>
+      </div>
+      <div class="cat-list" id="categoryBars">
+        <div class="cat-row"><div class="cat-info"><span class="cat-name">🍔 Food</span><span class="cat-amt">₹5,200</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--orange)"></div></div></div>
+        <div class="cat-row"><div class="cat-info"><span class="cat-name">🚗 Transport</span><span class="cat-amt">₹3,800</span></div><div class="bar-track"><div class="bar-fill" style="width:73%;background:var(--blue)"></div></div></div>
+        <div class="cat-row"><div class="cat-info"><span class="cat-name">🛍️ Shopping</span><span class="cat-amt">₹3,100</span></div><div class="bar-track"><div class="bar-fill" style="width:60%;background:var(--purple)"></div></div></div>
+        <div class="cat-row"><div class="cat-info"><span class="cat-name">💡 Bills</span><span class="cat-amt">₹2,750</span></div><div class="bar-track"><div class="bar-fill" style="width:53%;background:var(--yellow)"></div></div></div>
+        <div class="cat-row"><div class="cat-info"><span class="cat-name">🏥 Health</span><span class="cat-amt">₹1,900</span></div><div class="bar-track"><div class="bar-fill" style="width:37%;background:var(--green)"></div></div></div>
+        <div class="cat-row"><div class="cat-info"><span class="cat-name">🎬 Entertainment</span><span class="cat-amt">₹1,100</span></div><div class="bar-track"><div class="bar-fill" style="width:21%;background:var(--red)"></div></div></div>
+        <div class="cat-row"><div class="cat-info"><span class="cat-name">📚 Education</span><span class="cat-amt">₹600</span></div><div class="bar-track"><div class="bar-fill" style="width:12%;background:#A8EDEA"></div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Expenses Table ── -->
+  <div class="table-section-header">
+    <div>
+      <div class="section-label" style="margin-bottom:4px">All Expenses</div>
+      <div style="font-size:15px;font-weight:700" id="table-heading">Showing of expenses</div>
+    </div>
+    <button class="add-btn" onclick="openAddModal()">
+      <div class="plus">+</div>
+      Add Expense
+    </button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="expense-tbody">
+
+      </tbody>
+    </table>
+    <div class="pagination">
+      <div class="page-info" id="page-info"></div>
+      <div class="page-btns" id="page-btns">
+
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<!-- ── Add / Edit Modal ── -->
+<div class="modal-overlay" id="expense-modal">
+  <div class="modal">
+    <div class="modal-top">
+      <div>
+        <div class="modal-title" id="modal-title">Add Expense</div>
+        <div class="modal-subtitle" id="modal-sub">FILL IN THE DETAILS BELOW</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+
+    <div class="form-grid">
+      <!-- Amount -->
+      <div class="form-group">
+        <label class="form-label">Amount</label>
+        <div class="amount-wrap">
+          <span class="currency-sym">₹</span>
+          <input type="hidden" class="form-input" id="f-id"/>
+          <input type="number" class="form-input" id="f-amount" placeholder="0.00" min="1" step="0.01"/>
+        </div>
+      </div>
+      <!-- Date -->
+      <div class="form-group">
+        <label class="form-label">Date</label>
+        <input type="date" class="form-input" id="f-date"/>
+      </div>
+      <!-- Description -->
+      <div class="form-group full">
+        <label class="form-label">Description</label>
+        <input type="text" class="form-input" id="f-desc" placeholder="e.g. Lunch at office canteen"/>
+      </div>
+      <!-- Category pills -->
+      <div class="form-group full">
+        <label class="form-label">Category</label>
+        <div class="cat-pills" id="cat-pills">
+          <button class="cat-pill" onclick="selectCat(this,'Food')">🍔 Food</button>
+          <button class="cat-pill" onclick="selectCat(this,'Transport')">🚗 Transport</button>
+          <button class="cat-pill" onclick="selectCat(this,'Shopping')">🛍️ Shopping</button>
+          <button class="cat-pill" onclick="selectCat(this,'Bills')">💡 Bills</button>
+          <button class="cat-pill" onclick="selectCat(this,'Health')">🏥 Health</button>
+          <button class="cat-pill" onclick="selectCat(this,'Entertainment')">🎬 Entertainment</button>
+          <button class="cat-pill" onclick="selectCat(this,'Education')">📚 Education</button>
+          <button class="cat-pill" onclick="selectCat(this,'Other')">📦 Other</button>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Mode</label>
+        <div class="cat-pills" id="paymentmode">
+          <button class="mode-pill Selected" onclick="selectMode(this,'CC')">Credit Card</button>
+          <button class="mode-pill" onclick="selectMode(this,'UPI')">UPI</button>
+          <button class="mode-pill" onclick="selectMode(this,'Wallet')">Wallet</button>
+          <button class="mode-pill" onclick="selectMode(this,'Cash')">Cash</button>
+        </div>
+      </div>
+      <div class="form-group full">
+        <label class="form-label">Type</label>
+        <div class="cat-pills" id="type">
+          <button class="type-pill Selected" onclick="selectType(this,'Need')">Need</button>
+          <button class="type-pill" onclick="selectType(this,'Want')">Want</button>
+          <button class="type-pill" onclick="selectType(this,'Saving')">Saving</button>
+        </div>
+      </div>
+      <!-- Notes -->
+      <div class="form-group full">
+        <label class="form-label">Notes <span style="opacity:.4">(optional)</span></label>
+        <textarea class="form-textarea" id="f-notes" placeholder="Any extra details..."></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveExpense()" id="save-btn">Save Expense</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Delete Confirm Modal ── -->
+<div class="modal-overlay" id="delete-modal">
+  <div class="del-modal">
+    <div class="del-icon">🗑️</div>
+    <div class="del-title">Delete Expense?</div>
+    <div class="del-sub" id="del-desc-text">This action cannot be undone.</div>
+    <div class="del-footer">
+      <button class="btn btn-ghost" onclick="closeDeleteModal()">Cancel</button>
+      <button class="btn btn-danger" onclick="confirmDelete()">Yes, Delete</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div class="toast" id="toast">
+  <span id="toast-icon">✓</span>
+  <span id="toast-msg">Done!</span>
+</div>
+<script src="js/app.js"></script>
+

@@ -1,0 +1,12 @@
+<div class="topbar">
+  <div class="logo">Spend<span>Smart</span></div>
+  <div class="topbar-right">
+    {% if user %}
+    <button class="logout-btn" onclick="logout()">Logout</button>
+    <div class="user-chip">
+      <div class="avatar">{{user.name[0]}}</div>
+      {{user.name}}
+    </div>
+    {% endif %}
+  </div>
+</div>
