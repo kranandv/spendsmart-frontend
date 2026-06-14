@@ -387,7 +387,7 @@ async function openEditModal(id) {
           });
           selectedMode=e.mode=="CC"?"Credit Card":e.mode;
           document.querySelectorAll('.mode-pill').forEach(p => {
-            p.classList.toggle('selected', p.textContent.includes(e.mode));
+            p.classList.toggle('selected', p.textContent.includes(selectedMode));
           });
           document.querySelectorAll('.type-pill').forEach(p => {
             p.classList.toggle('selected', p.textContent.includes(e.etype));
