@@ -30,9 +30,9 @@ const loginForm = document.getElementById('loginForm');
                     // Save token to cookie
                     //document.cookie = `access_token=${data.access_token}; path=/;max-age=2592000; SameSite=None; Secure=true`;
                     //window.location.href = '/dashboard.html'; // Change this to your desired redirect page
-                    setTimeout(() => {
+                    //setTimeout(() => {
                         window.location.href = "/dashboard.html";
-                    }, 0);
+                    //}, 0);
                 } else {
                     // Handle error
                     const errorData = await response.json();

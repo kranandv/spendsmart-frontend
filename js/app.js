@@ -381,10 +381,15 @@ async function openEditModal(id) {
           document.getElementById('f-date').value   = e.date;
           document.getElementById('f-desc').value   = e.description;
           document.getElementById('f-id').value   = e.id;
-          //document.getElementById('f-notes').value  = e.notes;
-          selectedCat = e.category;
+          document.getElementById('f-notes').value  = e.notes;
           document.querySelectorAll('.cat-pill').forEach(p => {
             p.classList.toggle('selected', p.textContent.includes(e.category));
+          });
+          document.querySelectorAll('.mode-pill').forEach(p => {
+            p.classList.toggle('selected', p.textContent.includes(e.mode));
+          });
+          document.querySelectorAll('.type-pill').forEach(p => {
+            p.classList.toggle('selected', p.textContent.includes(e.etype));
           });
           document.getElementById('expense-modal').classList.add('open');
         } else {
