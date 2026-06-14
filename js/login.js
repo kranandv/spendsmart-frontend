@@ -1,4 +1,33 @@
 backendserver='https://spendsmart-backend-ce6i.onrender.com/';
+
+(function () {
+    let activeRequests = 0;
+
+    function showLoader() {
+        activeRequests++;
+        document.getElementById('loading-overlay')?.classList.add('active');
+    }
+
+    function hideLoader() {
+        activeRequests = Math.max(0, activeRequests - 1);
+        if (activeRequests === 0) {
+            document.getElementById('loading-overlay')?.classList.remove('active');
+        }
+    }
+
+    const originalFetch = window.fetch;
+
+    window.fetch = async function (...args) {
+        showLoader();
+        try {
+            const response = await originalFetch(...args);
+            return response;
+        } finally {
+            hideLoader();
+        }
+    };
+})();
+
 const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', async function (event) {
@@ -117,3 +146,4 @@ function showToast(msg, type='success') {
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
 }
+

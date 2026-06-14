@@ -396,8 +396,6 @@ async function openEditModal(id) {
         });
 
         if (response.ok) {
-        if(response.redirected)
-            window.location.href=response.url;
         const e = await response.json();
           document.getElementById('modal-title').textContent = 'Edit Expense';
           document.getElementById('modal-sub').textContent   = 'UPDATE THE DETAILS BELOW';
@@ -449,17 +447,17 @@ async function getExpenseDetails(cat="",start_date="",end_date="",page=1,per_pag
         });
 
         if (response.ok) {
-        const e = await response.json();
-        pagebtnhtml='';
-        getFilterData();
-        if(e.has_prev)
-            pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+from+'\',\''+to+'\','+(e.page-1)+','+e.per_page+')">Previous</a>';
-        if(e.has_next)
-            pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+from+'\',\''+to+'\','+(e.page+1)+','+e.per_page+')">Next</a>';
-        document.getElementById('page-btns').innerHTML=pagebtnhtml;
-        document.getElementById('page-info').innerHTML='Page '+e.page+' of '+e.total_pages;
-        document.getElementById('table-heading').innerHTML='Showing '+(e.total>e.per_page? e.per_page: e.total)+' of '+e.total+' expenses';
-        renderTable(e.expenses);
+            const e = await response.json();
+            pagebtnhtml='';
+            getFilterData();
+            if(e.has_prev)
+                pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+from+'\',\''+to+'\','+(e.page-1)+','+e.per_page+')">Previous</a>';
+            if(e.has_next)
+                pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+from+'\',\''+to+'\','+(e.page+1)+','+e.per_page+')">Next</a>';
+            document.getElementById('page-btns').innerHTML=pagebtnhtml;
+            document.getElementById('page-info').innerHTML='Page '+e.page+' of '+e.total_pages;
+            document.getElementById('table-heading').innerHTML='Showing '+(e.total>e.per_page? e.per_page: e.total)+' of '+e.total+' expenses';
+            renderTable(e.expenses);
         } else {
             // Handle error
             if(response.status==401)
