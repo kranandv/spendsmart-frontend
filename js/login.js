@@ -28,7 +28,7 @@ const loginForm = document.getElementById('loginForm');
                     // Delete any cookies available
                     //logout();
                     // Save token to cookie
-                    document.cookie = `access_token=${data.access_token}; path=/;max-age=2592000; SameSite=None; Secure=true`;
+                    //document.cookie = `access_token=${data.access_token}; path=/;max-age=2592000; SameSite=None; Secure=true`;
                     //window.location.href = '/dashboard.html'; // Change this to your desired redirect page
                     setTimeout(() => {
                         window.location.href = "/dashboard.html";
