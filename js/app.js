@@ -58,10 +58,10 @@ let spendChart;
 async function loadSpendChart() {
     try {
         const token = getCookie('access_token');
-        console.log(token)
-        if (!token) {
-            throw new Error('Authentication token not found');
-        }
+        // console.log(token)
+        // if (!token) {
+        //     throw new Error('Authentication token not found');
+        // }
         getFilterData();
         const response = await fetch(`${API_BASE_URL}/expenses/chart-data?category=${cat}&start_date=${from}&end_date=${to}`, {
             method: 'GET',
@@ -215,10 +215,10 @@ async function getSummary()
 {
     try {
         const token = getCookie('access_token');
-        console.log(token)
-        if (!token) {
-            throw new Error('Authentication token not found');
-        }
+        // console.log(token)
+        // if (!token) {
+        //     throw new Error('Authentication token not found');
+        // }
         const response = await fetch(`${API_BASE_URL}/expenses/summary`, {
             method: 'GET',
             headers: {
@@ -401,10 +401,10 @@ async function openEditModal(id) {
 async function getExpenseDetails(cat="",start_date="",end_date="",page=1,per_page=5) {
     try {
         const token = getCookie('access_token');
-        console.log(token)
-        if (!token) {
-            throw new Error('Authentication token not found');
-        }
+        // console.log(token)
+        // if (!token) {
+        //     throw new Error('Authentication token not found');
+        // }
 
         const response = await fetch(`${API_BASE_URL}/expenses/expenses?category=${cat}&start_date=${start_date}&end_date=${end_date}&page=${page}&per_page=${per_page}`, {
             method: 'GET',
@@ -495,11 +495,11 @@ async function saveExpense() {
     try {
         const token = getCookie('access_token');
         //console.log(token)
-        if (!token) {
-            //throw new Error('Authentication token not found');
-            showToast('Authentication token not found','error');
+        // if (!token) {
+        //     //throw new Error('Authentication token not found');
+        //     showToast('Authentication token not found','error');
 
-        }
+        // }
         //console.log(`${expenseId}`)
         if(editingId)
         {
@@ -567,9 +567,9 @@ function closeDeleteModal() {
 async function confirmDelete() {
   try {
     const token = getCookie('access_token');
-    if (!token) {
-        throw new Error('Authentication token not found');
-    }
+    // if (!token) {
+    //     throw new Error('Authentication token not found');
+    // }
     const response = await fetch(`${API_BASE_URL}/expenses/${deletingId}`, {
         method: 'DELETE',
         headers: {
