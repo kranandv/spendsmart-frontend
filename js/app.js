@@ -385,6 +385,7 @@ async function openEditModal(id) {
           document.querySelectorAll('.cat-pill').forEach(p => {
             p.classList.toggle('selected', p.textContent.includes(e.category));
           });
+          selectedMode=e.mode=="CC"?"Credit Card":e.mode;
           document.querySelectorAll('.mode-pill').forEach(p => {
             p.classList.toggle('selected', p.textContent.includes(e.mode));
           });
