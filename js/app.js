@@ -658,7 +658,7 @@ function getCookie(name) {
 };
 async function logout() {
     try {
-        const response = await fetch(`${API_BASE_URL}/logout`, {
+        const response = await fetch(`${API_BASE_URL}/expenses/logout`, {
             method: 'POST',
             credentials: 'include',
         });
