@@ -73,6 +73,7 @@ async function loadSpendChart() {
         });
 
         if (response.ok) {
+            
         const result = await response.json();
         const summary = result.chart_data || [];
         const typeSummary = result.typeSummary || [];
@@ -83,6 +84,8 @@ async function loadSpendChart() {
 
         } else {
             // Handle error
+            if(response.status==401)
+                window.location.href = '/login.html';
             const errorData = await response.json();
             alert(`Error: ${errorData.detail}`);
         }
@@ -275,6 +278,8 @@ async function getSummary()
         document.getElementById('card-avg').innerHTML='₹'+e.month_avg;
         } else {
             // Handle error
+            if(response.status==401)
+                window.location.href = '/login.html';
             console.log(response);
             const errorData = await response.json();
             alert(`Error: ${errorData.detail}`);
@@ -415,6 +420,8 @@ async function openEditModal(id) {
           document.getElementById('expense-modal').classList.add('open');
         } else {
             // Handle error
+            if(response.status==401)
+                window.location.href = '/login.html';
             const errorData = await response.json();
             alert(`Error: ${errorData.detail}`);
         }
@@ -455,6 +462,8 @@ async function getExpenseDetails(cat="",start_date="",end_date="",page=1,per_pag
         renderTable(e.expenses);
         } else {
             // Handle error
+            if(response.status==401)
+                window.location.href = '/login.html';
             const errorData = await response.json();
             alert(`Error: ${errorData.detail}`);
         }
@@ -543,6 +552,8 @@ async function saveExpense() {
                 getFilterData();
                 getExpenseDetails(cat,from,to);
             } else {
+                if(response.status==401)
+                    window.location.href = '/login.html';
                 const errorData = await response.json();
                 //alert(`Error: ${errorData.detail}`);
                 showToast('Some error','error');
@@ -564,6 +575,8 @@ async function saveExpense() {
                 getFilterData();
                 getExpenseDetails(cat,from,to);
             } else {
+                if(response.status==401)
+                    window.location.href = '/login.html';
                 const errorData = await response.json();
                 //alert(`Error: ${errorData.detail}`);
                 showToast('Some error','error');
@@ -609,6 +622,8 @@ async function confirmDelete() {
         getExpenseDetails(cat,from,to);
     } else {
         // Handle error
+        if(response.status==401)
+            window.location.href = '/login.html';
         const errorData = await response.json();
         alert(`Error: ${errorData.detail}`);
         showToast('An error occurred. Please try again.','error');
