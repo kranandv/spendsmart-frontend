@@ -75,10 +75,11 @@ async function loadSpendChart() {
         if (response.ok) {
         const result = await response.json();
         const summary = result.chart_data || [];
+        const typeSummary = result.typeSummary || [];
 
 
         generateCharts(summary);
-        generateCategoryBars(summary);
+        generateCategoryBars(typeSummary);
 
         } else {
             // Handle error
@@ -164,13 +165,13 @@ function generateCategoryBars(summary)
     let html = '';
     summary.forEach(item => {
         const percentage = maxAmount > 0 ? Math.round((item.total / maxAmount) * 100) : 0;
-        const emoji = getCategoryEmoji(item.category);
-        const color = getCategoryColor(item.category);
+        const emoji = getEtypeEmoji(item.etype);
+        const color = getEtypeColor(item.etype);
 
         html += `
             <div class="cat-row">
                 <div class="cat-info">
-                    <span class="cat-name">${emoji} ${item.category}</span>
+                    <span class="cat-name">${emoji} ${item.etype}</span>
                     <span class="cat-amt">₹${item.total.toLocaleString('en-IN')}</span>
                 </div>
                 <div class="bar-track">
@@ -194,6 +195,25 @@ function getCategoryEmoji(category) {
         'Health': '🏥',
         'Entertainment': '🎬',
         'Education': '📚',
+        // Add more categories
+    };
+    return emojis[category] || '📌';
+}
+
+function getEtypeColor(category) {
+    const colors = {
+        'Need': 'var(--orange)',
+        'Saving': 'var(--green)',
+        'Want': 'var(--red)',
+    };
+    return colors[category] || 'var(--primary)';
+}
+
+function getEtypeEmoji(category) {
+    const emojis = {
+        'Need': '🍔',
+        'Want': '🛍️',
+        'Saving': '🏥',
         // Add more categories
     };
     return emojis[category] || '📌';
