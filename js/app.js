@@ -656,19 +656,23 @@ function getCookie(name) {
     }
     return cookieValue;
 };
-function logout() {
-    // Get all cookies
-    const cookies = document.cookie.split(";");
+async function logout() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/logout`, {
+            method: 'POST',
+            credentials: 'include',
+        });
 
-    // Iterate through all cookies and delete each one
-    for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i];
-        const eqPos = cookie.indexOf("=");
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        // Set the cookie's expiry date to a past date to delete it
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        if (response.ok) {
+            window.location.href = '/login.html';
+        } else {
+            // Handle error
+            const errorData = await response.json();
+            alert(`Error: ${errorData.detail}`);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
     }
-
-    // Redirect to the login page
-    window.location.href = '/login.html';
-    };
+    
+    }
