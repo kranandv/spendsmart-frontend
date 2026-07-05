@@ -63,7 +63,7 @@ async function loadSpendChart() {
         //     throw new Error('Authentication token not found');
         // }
         getFilterData();
-        const response = await apifetch(`${API_BASE_URL}/expenses/chart-data?category=${cat}&start_date=${from}&end_date=${to}`, {
+        const response = await apiFetch(`${API_BASE_URL}/expenses/chart-data?category=${cat}&start_date=${from}&end_date=${to}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -242,7 +242,7 @@ async function getSummary()
         // if (!token) {
         //     throw new Error('Authentication token not found');
         // }
-        const response = await apifetch(`${API_BASE_URL}/expenses/summary`, {
+        const response = await apiFetch(`${API_BASE_URL}/expenses/summary`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -386,7 +386,7 @@ async function openEditModal(id) {
 
         console.log(`${expenseId}`)
 
-        const response = await apifetch(`${API_BASE_URL}/expenses/${expenseId}`, {
+        const response = await apiFetch(`${API_BASE_URL}/expenses/${expenseId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -437,7 +437,7 @@ async function getExpenseDetails(cat="",start_date="",end_date="",page=1,per_pag
         //     throw new Error('Authentication token not found');
         // }
 
-        const response = await apifetch(`${API_BASE_URL}/expenses/expenses?category=${cat}&start_date=${start_date}&end_date=${end_date}&page=${page}&per_page=${per_page}`, {
+        const response = await apiFetch(`${API_BASE_URL}/expenses/expenses?category=${cat}&start_date=${start_date}&end_date=${end_date}&page=${page}&per_page=${per_page}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -536,7 +536,7 @@ async function saveExpense() {
         //console.log(`${expenseId}`)
         if(editingId)
         {
-            const response = await apifetch(`${API_BASE_URL}/expenses/${expenseId}`, {
+            const response = await apiFetch(`${API_BASE_URL}/expenses/${expenseId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -559,7 +559,7 @@ async function saveExpense() {
         }
         else
         {
-            const response = await apifetch(`${API_BASE_URL}/expenses/`, {
+            const response = await apiFetch(`${API_BASE_URL}/expenses/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -607,7 +607,7 @@ async function confirmDelete() {
     // if (!token) {
     //     throw new Error('Authentication token not found');
     // }
-    const response = await apifetch(`${API_BASE_URL}/expenses/${deletingId}`, {
+    const response = await apiFetch(`${API_BASE_URL}/expenses/${deletingId}`, {
         method: 'DELETE',
         headers: {
             'Authorization': `Bearer ${token}`
@@ -671,7 +671,7 @@ function getCookie(name) {
 };
 async function logout() {
     try {
-        const response = await apifetch(`${API_BASE_URL}/expenses/logout`, {
+        const response = await apiFetch(`${API_BASE_URL}/expenses/logout`, {
             method: 'POST',
             //credentials: 'include',
         });
