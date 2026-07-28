@@ -16,8 +16,11 @@ let selectedCat = '';
 let selectedMode= '';
 let selectedType= '';
 let cat   = null;
-let from  = null;
-let to    = null;
+
+var date = new Date();
+var from = new Date(date.getFullYear(), date.getMonth(), 1);
+var to = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
 
 // ── Render table ─────────────────────────────────────────────
 function renderTable(data) {
@@ -429,7 +432,7 @@ async function openEditModal(id) {
     }
 }
 
-async function getExpenseDetails(cat="",start_date="",end_date="",page=1,per_page=5) {
+async function getExpenseDetails(cat="",start_date="",end_date="",page=1,per_page=15) {
     try {
         const token = getCookie('access_token');
         // console.log(token)
@@ -451,9 +454,9 @@ async function getExpenseDetails(cat="",start_date="",end_date="",page=1,per_pag
             pagebtnhtml='';
             getFilterData();
             if(e.has_prev)
-                pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+from+'\',\''+to+'\','+(e.page-1)+','+e.per_page+')">Previous</a>';
+                pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+start_date+'\',\''+end_date+'\','+(e.page-1)+','+e.per_page+')">Previous</a>';
             if(e.has_next)
-                pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+from+'\',\''+to+'\','+(e.page+1)+','+e.per_page+')">Next</a>';
+                pagebtnhtml+='<a class="page-btn" onclick="getExpenseDetails(\''+cat+'\',\''+start_date+'\',\''+end_date+'\','+(e.page+1)+','+e.per_page+')">Next</a>';
             document.getElementById('page-btns').innerHTML=pagebtnhtml;
             document.getElementById('page-info').innerHTML='Page '+e.page+' of '+e.total_pages;
             document.getElementById('table-heading').innerHTML='Showing '+(e.total>e.per_page? e.per_page: e.total)+' of '+e.total+' expenses';
