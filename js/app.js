@@ -21,6 +21,27 @@ var date = new Date();
 var from = new Date(date.getFullYear(), date.getMonth(), 1);
 var to = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
+const now1 = new Date();
+const year1 = now.getFullYear();
+const month1 = now.getMonth();
+
+// 1. Get first date of current month
+const firstDate = new Date(year1, month1, 1);
+
+// 2. Get last date of current month (day 0 of next month)
+const lastDate = new Date(year1, month1 + 1, 0);
+
+// Helper function to format Date object to YYYY-MM-DD
+function formatDate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+// 3. Set the values of both input fields
+document.getElementById('filter-from').value = formatDate(firstDate);
+document.getElementById('filter-to').value = formatDate(lastDate);
 
 // ── Render table ─────────────────────────────────────────────
 function renderTable(data) {
@@ -343,8 +364,11 @@ function applyFilter() {
 }
 function resetFilter() {
   document.getElementById('filter-cat').value  = '';
-  document.getElementById('filter-from').value = '2026-06-01';
-  document.getElementById('filter-to').value   = '2026-06-30';
+
+    var from = firstDate;
+    var to = lastDate;
+  document.getElementById('filter-from').value = from;
+  document.getElementById('filter-to').value   = to;
   renderTable(expenses);
   document.getElementById('active-chips').style.display = 'none';
   document.getElementById('table-heading').textContent = `Showing ${expenses.length} of ${expenses.length} expenses`;
