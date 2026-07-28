@@ -22,8 +22,8 @@ var from = new Date(date.getFullYear(), date.getMonth(), 1);
 var to = new Date(date.getFullYear(), date.getMonth() + 1, 0);
 
 const now1 = new Date();
-const year1 = now.getFullYear();
-const month1 = now.getMonth();
+const year1 = now1.getFullYear();
+const month1 = now1.getMonth();
 
 // 1. Get first date of current month
 const firstDate = new Date(year1, month1, 1);
