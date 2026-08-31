@@ -283,8 +283,8 @@ async function getSummary()
             card1='<div class="trend up">▲ '+e.incr_percentage+'%</div>';
         card1+='<div class="icon">💰</div>'+
           '<div class="label">Total This Month</div>'+
-          '<div class="value" id="card-total">₹'+e.this_month_total+'</div>'+
-          '<div class="sub">vs ₹'+e.last_month_total+' last month</div>';
+          '<div class="value" id="card-total">₹'+e.this_month_total+'</div>';
+          //'<div class="sub">vs ₹'+e.last_month_total+' last month</div>';
         card2='<div class="icon">🔥</div>'+
           '<div class="label">Highest Category</div>'+
           '<div class="value" id="card-top-cat">'+e.highest_category+'</div>'+
