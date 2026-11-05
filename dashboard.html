@@ -26,6 +26,37 @@
     color:#E8E6F0;
     border-color:#6B7280;
   }
+
+  /* Chart wrapper: fixed height so both charts use the full width */
+  .chart-box{ position:relative; width:100%; height:430px; }
+  @media (max-width:600px){ .chart-box{ height:400px; } }
+
+  /* ── Mobile fix for the Add/Edit modal ──
+     The modal is capped to the visible screen height and scrolls inside itself,
+     and the Save/Cancel footer stays pinned at the bottom so it is never hidden. */
+  .modal-overlay{
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+    align-items:flex-start !important;   /* top of a tall modal is never cut off */
+    padding:12px 0;
+  }
+  .modal{
+    margin:auto !important;              /* still centred when it fits */
+    max-height:calc(100vh - 24px);
+    max-height:calc(100dvh - 24px);      /* dvh = real visible height on phones */
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+  }
+  .modal .modal-footer{
+    position:sticky;
+    bottom:0;
+    z-index:2;
+    background:var(--surface, #12141E);
+    border-top:1px solid var(--border, #1E2030);
+    padding-top:12px;
+    padding-bottom:calc(12px + env(safe-area-inset-bottom));
+  }
 </style>
 </head>
 <body>
@@ -99,15 +130,22 @@
 
   <!-- ── Chart + Breakdown ── -->
   <div class="section-label">Spending Breakdown</div>
-  <div class="bottom-grid">
+  <div class="bottom-grid" style="grid-template-columns:1fr">
     <div class="panel">
       <div class="panel-header">
         <div class="panel-title">Spent vs Budget by Category</div>
-        <div class="panel-meta">BAR = SPENT · LINE = BUDGET · RED = OVER</div>
+        <div class="panel-meta">BAR = SPENT · LINE = BUDGET · RED = OVER · LABEL = SPENT/BUDGET</div>
       </div>
-      <canvas id="spendChart" height="230"></canvas>
+      <div class="chart-box"><canvas id="spendChart"></canvas></div>
     </div>
-    <div class="panel">
+
+    <div>
+      <button class="btn btn-ghost" onclick="toggleBreakdown()">
+        <span id="breakdown-arrow">▸</span> Category Breakdown (Need / Want / Saving)
+      </button>
+    </div>
+    <!-- hidden until the button above is clicked -->
+    <div class="panel" id="breakdown-panel" style="display:none">
       <div class="panel-header">
         <div class="panel-title">Category Breakdown</div>
         <div class="panel-meta" id="catTotal">₹0 total</div>
@@ -126,7 +164,7 @@
         <div class="panel-title">Others: Spent vs Budget</div>
         <div class="panel-meta" id="othersTotal">₹0 of ₹15,000</div>
       </div>
-      <canvas id="othersChart" height="160"></canvas>
+      <div class="chart-box"><canvas id="othersChart"></canvas></div>
     </div>
   </div>
 

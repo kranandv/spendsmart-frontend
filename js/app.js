@@ -22,16 +22,18 @@ const catMeta = {
 };
 
 // ── Sub-categories of "Others" ──
+// (budgets add up to the Others budget of 15000)
 const subMeta = {
-  'Food Outside': { emoji:'🍔', budget:2000 },
-  'Onetime':      { emoji:'🎯', budget:5000 },
+  'Onetime':      { emoji:'🎯', budget:3500 },
+  'Misc':         { emoji:'📌', budget:2000 },
+  'Transport':    { emoji:'🚗', budget:2000 },
+  'Food Outside': { emoji:'🍔', budget:1500 },
   'Pp':           { emoji:'👤', budget:1000 },
   'Mm':           { emoji:'👤', budget:1000 },
   'An':           { emoji:'👤', budget:1000 },
   'Sh':           { emoji:'👤', budget:1000 },
   'Ab':           { emoji:'👤', budget:1000 },
   'Mn':           { emoji:'👤', budget:1000 },
-  'Misc':         { emoji:'📌', budget:2000 },
 };
 
 // DB stores the main category name, or the sub-category name directly for "Others" items.
@@ -87,7 +89,19 @@ function buildCategoryUI() {
 buildCategoryUI();
 
 function toggleSubGroup() {
-  document.getElementById('sub-group').style.display = (selectedCat === 'Others') ? '' : 'none';
+  const show = (selectedCat === 'Others');
+  const g = document.getElementById('sub-group');
+  g.style.display = show ? '' : 'none';
+  // on small screens make sure the newly opened sub-categories are scrolled into view
+  if (show) setTimeout(() => g.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 50);
+}
+
+// Show / hide the Need-Want-Saving breakdown panel (hidden by default)
+function toggleBreakdown() {
+  const p = document.getElementById('breakdown-panel');
+  const open = (p.style.display === 'none');
+  p.style.display = open ? '' : 'none';
+  document.getElementById('breakdown-arrow').textContent = open ? '▾' : '▸';
 }
 
 // ── Render table ─────────────────────────────────────────────
@@ -131,6 +145,32 @@ function renderTable(data) {
 let spendChart;
 let othersChart;
 
+// Writes "spent/budget" (vertical text) above every bar; red when over budget.
+const valueLabels = {
+  id: 'valueLabels',
+  afterDatasetsDraw(chart) {
+    const ctx    = chart.ctx;
+    const bars   = chart.getDatasetMeta(0).data;
+    const spent  = chart.data.datasets[0].data;
+    const budget = chart.data.datasets[1].data;
+    const y      = chart.scales.y;
+    ctx.save();
+    ctx.font = '10px "DM Mono", monospace';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    bars.forEach((bar, i) => {
+      const top = y.getPixelForValue(Math.max(spent[i], budget[i]));
+      ctx.fillStyle = spent[i] > budget[i] ? '#FF4D6A' : '#E8E6F0';
+      ctx.save();
+      ctx.translate(bar.x, top - 6);
+      ctx.rotate(-Math.PI / 2);
+      ctx.fillText(Math.round(spent[i]) + '/' + Math.round(budget[i]), 0, 0);
+      ctx.restore();
+    });
+    ctx.restore();
+  }
+};
+
 // Generic "spent vs budget" bar chart. Bars turn red when spent > budget;
 // budget is drawn as a horizontal marker on each bar.
 function drawBudgetChart(existing, canvasId, labels, spent, budgets, colors) {
@@ -166,8 +206,11 @@ function drawBudgetChart(existing, canvasId, labels, spent, budgets, colors) {
         }
       ]
     },
+    plugins: [valueLabels],
     options: {
       responsive: true,
+      maintainAspectRatio: false,          // height comes from the .chart-box wrapper
+      layout: { padding: { top: 80 } },    // room for the vertical spent/budget labels
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -186,7 +229,7 @@ function drawBudgetChart(existing, canvasId, labels, spent, budgets, colors) {
       scales: {
         x: {
           grid: { color: '#1E2030' },
-          ticks: { color: '#6B7280', font: { family: 'DM Mono', size: 10 }, maxRotation: 60, minRotation: 40 },
+          ticks: { color: '#6B7280', font: { family: 'DM Mono', size: 10 }, maxRotation: 90, minRotation: 60, autoSkip: false },
           border: { color: '#1E2030' }
         },
         y: {
@@ -194,7 +237,7 @@ function drawBudgetChart(existing, canvasId, labels, spent, budgets, colors) {
           ticks: {
             color: '#6B7280',
             font: { family: 'DM Mono', size: 10 },
-            callback: v => '₹' + (v / 1000).toFixed(0) + 'K'
+            callback: v => '₹' + (v / 1000).toFixed(v % 1000 ? 1 : 0) + 'K'
           },
           border: { color: '#1E2030' }
         }
